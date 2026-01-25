@@ -22,7 +22,7 @@ const Navbar = () => {
         className="flex text-white items-center justify-between p-8"
       >
         <div className="flex gap-2 items-center">
-          <SendIcon className="hover:animate-wiggle stroke-2 w-4 h-4 md:w-6 md:h-6 text-purple-400" />
+          <SendIcon className="stroke-2 w-4 h-4 md:w-6 md:h-6 text-purple-400" />
           <span className="font-sans font-bold text-xl md:text-3xl tracking-tighter">
             DocPilot
           </span>
