@@ -8,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Paperclip } from "lucide-react";
+import { ArrowLeft, Paperclip } from "lucide-react";
+import Link from "next/link";
 
 const signInSchema = z.object({
   email: z.email("Please enter a valid email"),
@@ -42,43 +43,52 @@ const Register = () => {
   ];
 
   return (
-    <div className="text-white flex justify-center items-center  h-full">
-      <div className="h-123 bg-zinc-900 rounded-lg p-12 border border-white/5">
+    <div className="text-white flex justify-center items-center h-full">
+      <div className="w-88 md:w-100 h-110 md:h-123 bg-zinc-900 rounded-lg p-12 m-5 border border-white/5">
         {/* mode pill*/}
-        <LayoutGroup>
-          <div className="flex bg-zinc-950 p-1 rounded-full w-fit border border-white/10">
-            {items.map((item) => {
-              const active = mode === item.key;
+        <div className="flex items-center justify-between">
+          <Link href="/">
+            <button>
+              <ArrowLeft className="rounded-full hover:bg-white/5 transition-colors ease-in-out duration-100 p-2 w-10 h-10" />
+            </button>
+          </Link>
+          <LayoutGroup>
+            <div className="flex bg-zinc-950 p-1 rounded-full w-fit border border-white/10">
+              {items.map((item) => {
+                const active = mode === item.key;
 
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={() => setMode(item.key)}
-                  className="relative cursor-pointer px-4 py-2 rounded-full text-sm"
-                >
-                  {/* active pill that animates between buttons */}
-                  {active && (
-                    <motion.div
-                      layoutId="auth-pill"
-                      transition={{
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 25,
-                      }}
-                      className="absolute inset-0 rounded-full bg-zinc-900 border border-white/10"
-                    />
-                  )}
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setMode(item.key)}
+                    className="relative cursor-pointer text-xs md:text-base px-4 py-2 rounded-full"
+                  >
+                    {/* active pill that animates between buttons */}
+                    {active && (
+                      <motion.div
+                        layoutId="auth-pill"
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 25,
+                        }}
+                        className="absolute inset-0 rounded-full bg-zinc-900 border border-white/10"
+                      />
+                    )}
 
-                  {/* label above pill */}
-                  <span className="relative z-10 text-white">{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </LayoutGroup>
+                    {/* label above pill */}
+                    <span className="relative z-10 text-white">
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </LayoutGroup>
+        </div>
 
-        <h2 className="text-2xl font-bold my-6">
+        <h2 className="text-xl md:text-2xl font-bold my-6">
           {items.map((item) => item.key === mode && item.title)}
         </h2>
 
@@ -110,10 +120,10 @@ const SignInForm = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 justify-center"
+      className="flex flex-col gap-3 justify-center items-center"
     >
       {/* Email */}
-      <div className="flex items-center">
+      <div className="w-full">
         <input
           type="email"
           autoComplete="off"
@@ -129,7 +139,7 @@ const SignInForm = () => {
       )}
 
       {/* pass */}
-      <div className="flex items-center ">
+      <div className="w-full">
         <input
           type="password"
           autoComplete="off"
@@ -144,10 +154,7 @@ const SignInForm = () => {
         </p>
       )}
 
-      <button
-        type="submit"
-        className="mt-4 bg-violet-600 hover:bg-violet-500 transition-colors py-2 px-4 rounded-md font-medium"
-      >
+      <button type="submit" className="btn-primary">
         Login
       </button>
     </form>
@@ -176,10 +183,10 @@ const SignUpForm = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 justify-center"
+      className="flex flex-col gap-3 justify-center items-center"
     >
       {/* Name */}
-      <div className="flex items-center">
+      <div className="w-full">
         <input
           type="text"
           placeholder="Name"
@@ -195,7 +202,7 @@ const SignUpForm = () => {
       )}
 
       {/* Email */}
-      <div className="flex items-center">
+      <div className="w-full">
         <input
           type="email"
           autoComplete="off"
@@ -211,7 +218,7 @@ const SignUpForm = () => {
       )}
 
       {/* pass */}
-      <div className="flex items-center ">
+      <div className="w-full">
         <input
           type="password"
           autoComplete="off"
@@ -227,16 +234,14 @@ const SignUpForm = () => {
       )}
 
       {/* Confirm Password */}
-      <div key="confirm-field" className="overflow-hidden">
-        <div className="flex items-center">
-          <input
-            type="password"
-            autoComplete="off"
-            {...form.register("confirmPassword")}
-            placeholder="Confirm Password"
-            className="input-inline-field"
-          />
-        </div>
+      <div className="w-full">
+        <input
+          type="password"
+          autoComplete="off"
+          {...form.register("confirmPassword")}
+          placeholder="Confirm Password"
+          className="input-inline-field"
+        />
       </div>
       {form.formState.errors.confirmPassword && (
         <p className="ml-2 text-sm text-destructive">
@@ -244,10 +249,7 @@ const SignUpForm = () => {
         </p>
       )}
 
-      <button
-        type="submit"
-        className="mt-4 bg-violet-600 hover:bg-violet-500 transition-colors py-2 px-4 rounded-md font-medium"
-      >
+      <button type="submit" className="btn-primary">
         Create Account
       </button>
     </form>
