@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar-landing";
 import Hero from "@/sections/hero";
 import LightRays from "@/components/light-rays";
 

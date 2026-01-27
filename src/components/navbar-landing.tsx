@@ -3,6 +3,7 @@ import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import Logo from "@/components/logo";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,7 +11,6 @@ const Navbar = () => {
   const navItems = [
     { label: "Overview", href: "#overview" },
     { label: "Features", href: "#features" },
-    { label: "Try Now", href: "#try" },
   ];
 
   return (
@@ -21,13 +21,7 @@ const Navbar = () => {
         transition={{ ease: "easeOut", duration: 0.6, delay: 0.8 }}
         className="flex text-white items-center justify-between p-8"
       >
-        <div className="flex gap-2 items-center">
-          <SendIcon className="stroke-2 w-4 h-4 md:w-6 md:h-6 text-purple-400" />
-          <span className="font-sans font-bold text-xl md:text-3xl tracking-tighter">
-            DocPilot
-          </span>
-        </div>
-
+        <Logo />
         <ul className="hidden md:flex gap-12 items-center">
           {navItems.map((item) => (
             <li key={item.label} className="font-medium text-lg ">

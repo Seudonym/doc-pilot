@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -27,9 +28,11 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ease: "easeOut", duration: 0.8, delay: 0.2 }}
-          className="relative transition-transform ease-out hover:scale-105 overflow-hidden rounded-lg w-fit bg-violet-600 text-white px-4 py-2 text-sm md:text-lg"
+          className="relative transition-transform ease-out hover:scale-105 overflow-hidden btn-primary max-w-fit"
         >
-          <button className="relative  z-10 font-medium">Try Now</button>
+          <Link href="/dashboard">
+            <button className="relative  z-10 font-medium">Try Now</button>
+          </Link>
           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/30 to-transparent z-0" />
         </motion.div>
       </div>

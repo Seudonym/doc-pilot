@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { ArrowLeft, Paperclip } from "lucide-react";
+import { ArrowLeft, LockIcon, MailIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
 const signInSchema = z.object({
@@ -123,7 +122,10 @@ const SignInForm = () => {
       className="flex flex-col gap-3 justify-center items-center"
     >
       {/* Email */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <MailIcon />
+        </div>
         <input
           type="email"
           autoComplete="off"
@@ -139,7 +141,10 @@ const SignInForm = () => {
       )}
 
       {/* pass */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <LockIcon />
+        </div>
         <input
           type="password"
           autoComplete="off"
@@ -186,7 +191,10 @@ const SignUpForm = () => {
       className="flex flex-col gap-3 justify-center items-center"
     >
       {/* Name */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <UserIcon />
+        </div>
         <input
           type="text"
           placeholder="Name"
@@ -202,7 +210,10 @@ const SignUpForm = () => {
       )}
 
       {/* Email */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <MailIcon />
+        </div>
         <input
           type="email"
           autoComplete="off"
@@ -218,7 +229,10 @@ const SignUpForm = () => {
       )}
 
       {/* pass */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <LockIcon />
+        </div>
         <input
           type="password"
           autoComplete="off"
@@ -234,7 +248,10 @@ const SignUpForm = () => {
       )}
 
       {/* Confirm Password */}
-      <div className="w-full">
+      <div className="flex items-center w-full">
+        <div className="input-inline-icon">
+          <LockIcon />
+        </div>
         <input
           type="password"
           autoComplete="off"
