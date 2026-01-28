@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutGroup, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import Link from "next/link";
 
 const signInSchema = z.object({
   email: z.email("Please enter a valid email"),
-  password: z.string().min(8, "Password must be atleast 8 characters long"),
+  password: z.string().min(1, "Please enter a password"),
 });
 type SignInFormData = z.infer<typeof signInSchema>;
 
@@ -31,6 +31,14 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const Register = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [session, router]);
 
   const items = [
     {
@@ -42,13 +50,13 @@ const Register = () => {
   ];
 
   return (
-    <div className="text-white flex justify-center items-center h-full">
-      <div className="w-88 md:w-100 h-110 md:h-123 bg-zinc-900 rounded-lg p-12 m-5 border border-white/5">
+    <div className="text-white flex justify-center h-full">
+      <div className="w-88 md:w-100 bg-zinc-900 rounded-lg p-12 m-5 border border-white/5">
         {/* mode pill*/}
         <div className="flex items-center justify-between">
-          <Link href="/">
+          <Link href="/" className="size-10">
             <button>
-              <ArrowLeft className="rounded-full hover:bg-white/5 transition-colors ease-in-out duration-100 p-2 w-10 h-10" />
+              <ArrowLeft className="btn-back" />
             </button>
           </Link>
           <LayoutGroup>
@@ -99,6 +107,7 @@ const Register = () => {
 
 const SignInForm = () => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: "", password: "" },
@@ -110,10 +119,11 @@ const SignInForm = () => {
         ...formData,
         callbackURL: "/dashboard",
       },
-      { onSuccess: () => router.push("/dashboard") },
+      {
+        onSuccess: () => router.push("/dashboard"),
+        onError: (e) => setError(e.error.message),
+      },
     );
-
-    console.log(data);
   };
 
   return (
@@ -121,10 +131,21 @@ const SignInForm = () => {
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-3 justify-center items-center"
     >
+      {/* API error */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="w-full p-3 text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg"
+        >
+          {error}
+        </motion.div>
+      )}
+
       {/* Email */}
       <div className="flex items-center w-full">
         <div className="input-inline-icon">
-          <MailIcon />
+          <MailIcon className="input-inline-svg" />
         </div>
         <input
           type="email"
@@ -143,7 +164,7 @@ const SignInForm = () => {
       {/* pass */}
       <div className="flex items-center w-full">
         <div className="input-inline-icon">
-          <LockIcon />
+          <LockIcon className="input-inline-svg" />
         </div>
         <input
           type="password"
@@ -168,6 +189,7 @@ const SignInForm = () => {
 
 const SignUpForm = () => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
@@ -179,7 +201,10 @@ const SignUpForm = () => {
         ...formData,
         callbackURL: "/dashboard",
       },
-      { onSuccess: () => router.push("/dashboard") },
+      {
+        onSuccess: () => router.push("/dashboard"),
+        onError: (e) => setError(e.error.message),
+      },
     );
 
     console.log(data);
@@ -190,6 +215,15 @@ const SignUpForm = () => {
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-3 justify-center items-center"
     >
+      {error && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="w-full p-3 text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg"
+        >
+          {error}
+        </motion.div>
+      )}
       {/* Name */}
       <div className="flex items-center w-full">
         <div className="input-inline-icon">

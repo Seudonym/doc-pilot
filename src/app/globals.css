@@ -33,19 +33,24 @@ html, body {
 
 
 @layer components {
-  .input-inline-icon { @apply border-l border-t border-b border-white/20 rounded-l-md inline-block py-2 px-4 bg-zinc-950 stroke-white/20 text-xs md:text-base;
+  .input-inline-icon { 
+    @apply border-l border-t border-b border-white/20 rounded-l-md size-8 md:size-10 flex items-center justify-center bg-zinc-950 stroke-white/20 text-xs md:text-base;
   }
 
   .input-inline-field {
-    @apply border-t border-r border-b rounded-r-md border-white/20 px-2 py-2 focus:outline-none bg-zinc-950 text-xs md:text-base w-full;
+    @apply border-t border-r border-b rounded-r-md border-white/20 h-8 md:h-10 focus:outline-none bg-zinc-950 text-xs md:text-base w-full;
   }
 
   .input-inline-svg {
-    @apply size-4 md:size-auto;
+    @apply size-4 md:size-5;
   }
 
   .btn-primary {
     @apply mt-4 bg-violet-600 hover:bg-violet-500 transition-colors py-2 px-4 rounded-md font-medium text-xs md:text-base w-full;
+  }
+  
+  .btn-back {
+    @apply rounded-full hover:bg-white/5 transition-colors ease-in-out duration-100 p-2 w-10 h-10;
   }
 }
 

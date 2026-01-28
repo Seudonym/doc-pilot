@@ -1,38 +1,44 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { UserIcon, MailIcon, LockIcon, ImageIcon } from "lucide-react";
+import { UserIcon, LockIcon, ImageIcon, ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 
 const ProfilePage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [session, setSession] = useState<any>(null);
 
   // Form states
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const { data, isPending } = authClient.useSession();
   useEffect(() => {
-    const fetchSession = async () => {
-      const { data } = await authClient.getSession();
-      if (!data) {
-        router.push("/register");
-        return;
-      }
-      setSession(data);
-      setName(data.user.name || "");
-      setEmail(data.user.email || "");
-      setImage(data.user.image || "");
-    };
-    fetchSession();
+    if (isPending) return;
+    if (!data) {
+      router.push("/register");
+      return;
+    }
+    setName(data.user.name || "");
+    setImage(data.user.image || "");
   }, [router]);
+
+  const pathname = usePathname();
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center items-center h-full text-white">
+        Loading...
+      </div>
+    );
+  }
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,23 +53,6 @@ const ProfilePage = () => {
       setMessage("Profile updated successfully!");
     } catch (error: any) {
       setMessage(error.message || "Failed to update profile");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChangeEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
-    try {
-      await authClient.changeEmail({
-        newEmail: email,
-      });
-      setMessage("Verification email sent to your new address!");
-    } catch (error: any) {
-      setMessage(error.message || "Failed to change email");
     } finally {
       setLoading(false);
     }
@@ -97,18 +86,17 @@ const ProfilePage = () => {
     }
   };
 
-  if (!session) {
-    return (
-      <div className="flex justify-center items-center h-full text-white">
-        Loading...
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">Profile Settings</h1>
+    <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="max-w-3xl mx-auto p-8">
+        <div className="flex items-center gap-4 mb-4">
+          <Link href="/dashboard" className="size-10">
+            <button>
+              <ArrowLeft className="btn-back" />
+            </button>
+          </Link>
+          <h1 className="text-3xl font-bold ">Profile Settings</h1>
+        </div>
 
         {message && (
           <div

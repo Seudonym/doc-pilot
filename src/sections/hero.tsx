@@ -30,7 +30,7 @@ const Hero = () => {
           transition={{ ease: "easeOut", duration: 0.8, delay: 0.2 }}
           className="relative transition-transform ease-out hover:scale-105 overflow-hidden btn-primary max-w-fit"
         >
-          <Link href="/dashboard">
+          <Link href="/register">
             <button className="relative  z-10 font-medium">Try Now</button>
           </Link>
           <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/30 to-transparent z-0" />

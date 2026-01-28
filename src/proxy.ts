@@ -3,7 +3,8 @@ import { getSessionCookie } from "better-auth/cookies";
 
 export async function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
-  if (!sessionCookie) return NextResponse.redirect(new URL("/", request.url));
+  if (!sessionCookie)
+    return NextResponse.redirect(new URL("/register", request.url));
   return NextResponse.next();
 }
 
