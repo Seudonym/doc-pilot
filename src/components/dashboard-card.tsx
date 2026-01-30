@@ -1,13 +1,16 @@
 "use client";
 import { EllipsisVerticalIcon } from "lucide-react";
 import ContextMenuButton from "./context-menu-button";
+import { deleteLibrary } from "@/app/dashboard/actions";
 
 const Card = ({
+  id,
   emoji,
   title,
   date,
   numSources,
 }: {
+  id: string;
   emoji: string;
   title: string;
   date: Date;
@@ -18,7 +21,17 @@ const Card = ({
   const year = date.getFullYear().toString();
   const formattedDate = `${month} ${day}, ${year}`;
 
-  const menuItems = [{ label: "Delete", variant: "danger" as const }];
+  const handleDelete = async () => {
+    try {
+      await deleteLibrary(id);
+    } catch (error) {
+      console.error("Failed to delete library:", error);
+    }
+  };
+
+  const menuItems = [
+    { label: "Delete", variant: "danger" as const, onClick: handleDelete },
+  ];
   return (
     <div
       tabIndex={0}
@@ -26,10 +39,17 @@ const Card = ({
     >
       <div className="flex justify-between items-center mb-6">
         <span className="text-5xl">{emoji}</span>
-        <ContextMenuButton
-          icon={<EllipsisVerticalIcon className="btn-back" />}
-          items={menuItems}
-        />
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <ContextMenuButton
+            icon={<EllipsisVerticalIcon className="btn-back" />}
+            items={menuItems}
+          />
+        </div>
       </div>
       <div className="flex flex-col">
         <h2 className="font-medium text-2xl mb-2 text-ellipsis line-clamp-2 max-w-3/4">

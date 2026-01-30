@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  libraries     Library[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +75,51 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Library {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  sources        Source[]
+  overallSummary String?
+
+  @@index([userId])
+  @@map("library")
+}
+
+model Source {
+  id        String  @id @default(cuid())
+  libraryId String
+  library   Library @relation(fields: [libraryId], references: [id], onDelete: Cascade)
+
+  fileName String
+  fileType String
+  fileSize Int
+  mimeType String
+
+  storageUrl String
+  storageKey String
+
+  status          ProcessingStatus @default(PENDING)
+  processingError String?
+
+  summary String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([libraryId])
+  @@map("source")
+}
+
+enum ProcessingStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
 }
